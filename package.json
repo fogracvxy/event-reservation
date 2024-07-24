@@ -4,12 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && next build",
+    "build": "prisma generate && prisma migrate deploy && next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
     "@prisma/client": "^5.16.1",
+    "@supabase/supabase-js": "^2.44.4",
     "@types/react-datepicker": "^7.0.0",
     "axios": "^1.7.2",
     "bcryptjs": "^2.4.3",
