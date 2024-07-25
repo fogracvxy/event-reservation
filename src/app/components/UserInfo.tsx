@@ -2,8 +2,10 @@
 
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
+
 export default function UserInfo({ session }: { session: any }) {
   const router = useRouter();
+
   const handleSignOut = () => {
     signOut();
   };
@@ -30,15 +32,18 @@ export default function UserInfo({ session }: { session: any }) {
       >
         Sign Out
       </button>
-      <button
-        onClick={() => router.push("/admin")}
-        className="ml-4 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
-      >
-        Admin
-      </button>
-      <pre className="mt-4 bg-gray-100 p-4 rounded overflow-auto">
+      {session?.user?.role === "admin" && (
+        <button
+          onClick={() => router.push("/admin")}
+          className="ml-4 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
+        >
+          Admin
+        </button>
+      )}
+
+      {/* <pre className="mt-4 bg-gray-100 p-4 rounded overflow-auto">
         {JSON.stringify(session, null, 2)}
-      </pre>
+      </pre> */}
     </div>
   );
 }

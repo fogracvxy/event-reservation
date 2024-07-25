@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import EventForm from "./EventForm";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { Hourglass } from "react-loader-spinner";
 type Event = {
   id: number;
   name: string;
@@ -37,19 +37,25 @@ export default function ReservationContent() {
     type: string;
     id: number | null;
   }>({ show: false, type: "", id: null });
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (!session) {
-      router.push("/login");
-    } else {
+    if (session) {
       fetchEvents();
     }
-  }, [session, router]);
-
+  }, [session]);
   const fetchEvents = async () => {
-    const res = await fetch("/api/events");
-    const data = await res.json();
-    setEvents(data);
+    setIsLoading(true);
+    try {
+      const res = await fetch("/api/events");
+      const data = await res.json();
+      setEvents(data);
+    } catch (error) {
+      console.error("Failed to fetch events:", error);
+      toast.error("Failed to load events. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const filteredEvents = events.filter(
@@ -121,9 +127,9 @@ export default function ReservationContent() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 ">
+    <div className="container mx-auto px-4 py-8">
       <ToastContainer />
-      <h1 className="text-3xl font-bold mb-6">Event Management</h1>
+      <h1 className="text-3xl font-bold mb-6">Rezervirajte termin</h1>
 
       {session?.user?.role === "admin" && (
         <div className="mb-8">
@@ -162,7 +168,7 @@ export default function ReservationContent() {
                 No
               </button>
               <button
-                className="px-4 py-2 bg-red-500 text-white rounded-md "
+                className="px-4 py-2 bg-red-500 text-white rounded-md"
                 onClick={() => {
                   if (confirmModal.type === "deleteEvent") {
                     confirmDeleteEvent(confirmModal.id!);
@@ -194,98 +200,119 @@ export default function ReservationContent() {
         </select>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredEvents.map((event) => (
-          <div
-            key={event.id}
-            className="bg-white text-black shadow-md rounded-lg p-6"
-          >
-            <h2 className="text-xl font-semibold mb-2">{event.name}</h2>
-            <p className="mb-1">
-              <strong>Date:</strong>{" "}
-              {new Date(event.date).toLocaleDateString("hr-HR")}
-            </p>
-            <p className="mb-1">
-              <strong>Time:</strong> {event.time}
-            </p>
-            <p className="mb-1">
-              <strong>Level:</strong> {event.level}
-            </p>
-            <p className="mb-1">
-              <strong>Location:</strong> {event.location}
-            </p>
-            <p className="mb-1">
-              <strong>Description:</strong> {event.description}
-            </p>
-            <p className="mb-4">
-              <strong>Reservations:</strong> {event.reservations.length}/
-              {event.limit}
-            </p>
+      {isLoading ? (
+        <div className="flex justify-center items-center h-full">
+          <Hourglass
+            visible={true}
+            height="40"
+            width="40"
+            ariaLabel="hourglass-loading"
+            wrapperStyle={{}}
+            wrapperClass=""
+            colors={["rgb(220 38 38)", "rgb(239 68 68)"]}
+          />
+        </div>
+      ) : (
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredEvents.map((event) => (
+              <div
+                key={event.id}
+                className="bg-white text-black shadow-md rounded-lg p-6"
+              >
+                <h2 className="text-xl font-semibold mb-2">{event.name}</h2>
+                <p className="mb-1">
+                  <strong>Date:</strong>{" "}
+                  {new Date(event.date).toLocaleDateString("hr-HR")}
+                </p>
+                <p className="mb-1">
+                  <strong>Time:</strong> {event.time}
+                </p>
+                <p className="mb-1">
+                  <strong>Level:</strong> {event.level}
+                </p>
+                <p className="mb-1">
+                  <strong>Location:</strong> {event.location}
+                </p>
+                <p className="mb-1">
+                  <strong>Description:</strong> {event.description}
+                </p>
+                <p className="mb-4">
+                  <strong>Reservations:</strong> {event.reservations.length}/
+                  {event.limit}
+                </p>
 
-            {session?.user?.role === "admin" && (
-              <div className="mb-4">
-                <h3 className="font-semibold">Reservations:</h3>
-                <ul>
-                  {event.reservations.map((res) => (
-                    <li
-                      key={res.id}
-                      className="flex justify-between items-center"
+                {session?.user?.role === "admin" && (
+                  <div className="mb-4">
+                    <h3 className="font-semibold">Reservations:</h3>
+                    <ul>
+                      {event.reservations.map((res) => (
+                        <li
+                          key={res.id}
+                          className="flex justify-between items-center"
+                        >
+                          <span>
+                            {res.user.first_name + " " + res.user.last_name}{" "}
+                          </span>
+                          <button
+                            onClick={() => handleCancelReservation(res.id)}
+                            className="ml-2 text-red-500 hover:text-red-700"
+                          >
+                            Cancel
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {session?.user?.role === "admin" ? (
+                  <div className="mt-4 space-y-2">
+                    <button
+                      onClick={() => handleDeleteEvent(event.id)}
+                      className="w-full py-2 px-4 rounded-md text-white font-semibold bg-red-500 hover:bg-red-600"
                     >
-                      <span>
-                        {res.user.first_name + " " + res.user.last_name}{" "}
-                      </span>
-                      <button
-                        onClick={() => handleCancelReservation(res.id)}
-                        className="ml-2 text-red-500 hover:text-red-700"
-                      >
-                        Cancel
-                      </button>
-                    </li>
-                  ))}
-                </ul>
+                      Delete Event
+                    </button>
+                  </div>
+                ) : isUserReserved(event) ? (
+                  <button
+                    className="w-full py-2 px-4 rounded-md text-white font-semibold bg-red-500 hover:bg-red-600"
+                    onClick={() => {
+                      const reservation = event.reservations.find(
+                        (res) =>
+                          res.user_id === parseInt(session?.user?.id as string)
+                      );
+                      if (reservation) {
+                        handleCancelReservation(reservation.id);
+                      }
+                    }}
+                  >
+                    Cancel Reservation
+                  </button>
+                ) : (
+                  <button
+                    className={`w-full py-2 px-4 rounded-md text-white font-semibold ${
+                      event.reservations.length < event.limit
+                        ? "bg-blue-500 hover:bg-blue-600"
+                        : "bg-gray-400 cursor-not-allowed"
+                    }`}
+                    disabled={event.reservations.length >= event.limit}
+                    onClick={() => handleReservation(event.id)}
+                  >
+                    {event.reservations.length < event.limit
+                      ? "Reserve"
+                      : "Full"}
+                  </button>
+                )}
               </div>
-            )}
-
-            {session?.user?.role === "admin" ? (
-              <div className="mt-4 space-y-2">
-                <button
-                  onClick={() => handleDeleteEvent(event.id)}
-                  className="w-full py-2 px-4 rounded-md text-white font-semibold bg-red-500 hover:bg-red-600"
-                >
-                  Delete Event
-                </button>
-              </div>
-            ) : isUserReserved(event) ? (
-              <button
-                className="w-full py-2 px-4 rounded-md text-white font-semibold bg-red-500 hover:bg-red-600"
-                onClick={() => {
-                  const reservation = event.reservations.find(
-                    (res) =>
-                      res.user_id === parseInt(session?.user?.id as string)
-                  );
-                  if (reservation) {
-                    handleCancelReservation(reservation.id);
-                  }
-                }}
-              >
-                Cancel Reservation
-              </button>
-            ) : (
-              <button
-                className={`w-full py-2 px-4 rounded-md text-white font-semibold ${
-                  event.reservations.length < event.limit
-                    ? "bg-blue-500 hover:bg-blue-600"
-                    : "bg-gray-400 cursor-not-allowed"
-                }`}
-                disabled={event.reservations.length >= event.limit}
-                onClick={() => handleReservation(event.id)}
-              >
-                {event.reservations.length < event.limit ? "Reserve" : "Full"}
-              </button>
-            )}
+            ))}
           </div>
-        ))}
-      </div>
+          <div className="text-red-700 pt-5 font-bold">
+            *molim da rezervirate termine ovisno o vašem iskustvu
+          </div>
+        </>
+      )}
     </div>
   );
 }

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function RegisterForm() {
   const [username, setUsername] = useState("");
@@ -134,6 +135,13 @@ export default function RegisterForm() {
       >
         Register
       </button>
+
+      <div className="pt-5">
+        Već imate račun?{" "}
+        <Link href="/login" className="text-blue-200 ">
+          Prijavite se
+        </Link>
+      </div>
     </form>
   );
 }

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function LoginForm() {
   const [username, setUsername] = useState("");
@@ -30,8 +31,8 @@ export default function LoginForm() {
   return (
     <form onSubmit={handleSubmit} className="w-full max-w-xs">
       {error && <p className="text-red-500 mb-4">{error}</p>}
-      <div className="mb-4 text-black">
-        <label htmlFor="username" className="block mb-2">
+      <div className="mb-4 ">
+        <label htmlFor="username" className="block mb-2 text-white">
           Username
         </label>
         <input
@@ -39,7 +40,7 @@ export default function LoginForm() {
           id="username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          className="w-full px-3 py-2 border rounded "
+          className="w-full px-3 py-2 border rounded text-black "
           required
         />
       </div>
@@ -52,7 +53,7 @@ export default function LoginForm() {
           id="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full px-3 py-2 border rounded"
+          className="w-full px-3 py-2 border rounded text-black"
           required
         />
       </div>
@@ -62,6 +63,12 @@ export default function LoginForm() {
       >
         Sign In
       </button>
+      <div className="pt-5">
+        Nemate račun?{" "}
+        <Link href="/register" className="text-blue-200 ">
+          Registrirajte se
+        </Link>
+      </div>
     </form>
   );
 }
