@@ -33,7 +33,7 @@ export default function LoginForm() {
       {error && <p className="text-red-500 mb-4">{error}</p>}
       <div className="mb-4 ">
         <label htmlFor="username" className="block mb-2 text-white">
-          Username
+          Korisničko ime
         </label>
         <input
           type="text"
@@ -46,7 +46,7 @@ export default function LoginForm() {
       </div>
       <div className="mb-4">
         <label htmlFor="password" className="block mb-2">
-          Password
+          Lozinka
         </label>
         <input
           type="password"
@@ -61,7 +61,7 @@ export default function LoginForm() {
         type="submit"
         className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
       >
-        Sign In
+        Prijava
       </button>
       <div className="pt-5">
         Nemate račun?{" "}

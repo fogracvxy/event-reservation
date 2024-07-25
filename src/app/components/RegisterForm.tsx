@@ -7,6 +7,7 @@ import Link from "next/link";
 export default function RegisterForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [email, setEmail] = useState("");
   const [first_name, setFirstName] = useState("");
   const [last_name, setLastName] = useState("");
@@ -17,6 +18,12 @@ export default function RegisterForm() {
     e.preventDefault();
     setError("");
     setMessage("");
+
+    // Check if passwords match
+    if (password !== confirmPassword) {
+      setError("Lozinke se ne podudaraju");
+      return;
+    }
 
     const registrationData = {
       username,
@@ -42,6 +49,7 @@ export default function RegisterForm() {
         // Clear the form
         setUsername("");
         setPassword("");
+        setConfirmPassword(""); // Clear the confirmation password
         setEmail("");
         setFirstName("");
         setLastName("");
@@ -59,14 +67,13 @@ export default function RegisterForm() {
       setError("An error occurred during registration");
     }
   };
-
   return (
     <form onSubmit={handleSubmit} className="w-full max-w-xs">
       {error && <p className="text-red-500 mb-4">{error}</p>}
       {message && <p className="text-green-500 mb-4">{message}</p>}
       <div className="mb-4">
         <label htmlFor="username" className="block mb-2">
-          Username
+          Korisničko ime
         </label>
         <input
           type="text"
@@ -92,7 +99,7 @@ export default function RegisterForm() {
       </div>
       <div className="mb-4">
         <label htmlFor="first_name" className="block mb-2">
-          First Name
+          Ime
         </label>
         <input
           type="text"
@@ -105,7 +112,7 @@ export default function RegisterForm() {
       </div>
       <div className="mb-4">
         <label htmlFor="last_name" className="block mb-2">
-          Last Name
+          Prezime
         </label>
         <input
           type="text"
@@ -118,7 +125,7 @@ export default function RegisterForm() {
       </div>
       <div className="mb-4">
         <label htmlFor="password" className="block mb-2">
-          Password
+          Lozinka
         </label>
         <input
           type="password"
@@ -129,11 +136,24 @@ export default function RegisterForm() {
           required
         />
       </div>
+      <div className="mb-4">
+        <label htmlFor="confirm_password" className="block mb-2">
+          Potvrdite lozinku
+        </label>
+        <input
+          type="password"
+          id="confirm_password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          className="w-full px-3 py-2 border rounded text-black"
+          required
+        />
+      </div>
       <button
         type="submit"
         className="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600"
       >
-        Register
+        Registracija
       </button>
 
       <div className="pt-5">

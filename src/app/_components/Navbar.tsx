@@ -143,7 +143,7 @@ const Navbar = () => {
                     pathname === "/login" ? "border-b-2" : ""
                   }`}
                 >
-                  Login
+                  Prijava
                 </Link>
                 <Link
                   href="/register"
@@ -151,7 +151,7 @@ const Navbar = () => {
                     pathname === "/register" ? "border-b-2" : ""
                   }`}
                 >
-                  Register
+                  Registracija
                 </Link>
               </>
             )}
@@ -195,7 +195,7 @@ const Navbar = () => {
                       pathname === "/login" ? "border-b-2" : ""
                     }`}
                   >
-                    Login
+                    Prijava
                   </Link>
                   <Link
                     href="/register"
@@ -203,7 +203,7 @@ const Navbar = () => {
                       pathname === "/register" ? "border-b-2" : ""
                     }`}
                   >
-                    Register
+                    Registracija
                   </Link>
                 </>
               )}

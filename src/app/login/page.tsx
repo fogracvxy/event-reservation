@@ -11,8 +11,8 @@ export default async function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center p-24">
-      <h1 className="text-3xl font-bold mb-6">Login</h1>
+    <div className="flex min-h-screen flex-col items-center justify-center ">
+      <h1 className="text-3xl font-bold mb-6">Prijava</h1>
       <LoginForm />
     </div>
   );
