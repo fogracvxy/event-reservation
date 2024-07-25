@@ -4,10 +4,23 @@ import { Dumbbell, Clock, Award } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import Image from "next/image";
+import { Hourglass } from "react-loader-spinner";
 export default function Home() {
   const { data: session, status } = useSession();
   if (status === "loading") {
-    return <p>Loading...</p>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Hourglass
+          visible={true}
+          height="40"
+          width="40"
+          ariaLabel="hourglass-loading"
+          wrapperStyle={{}}
+          wrapperClass=""
+          colors={["rgb(112, 128, 144)", "rgb(239 68 68)"]}
+        />
+      </div>
+    );
   }
   return (
     <main className="flex min-h-screen flex-col items-center justify-start bg-gray-100">
