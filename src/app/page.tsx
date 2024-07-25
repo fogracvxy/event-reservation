@@ -5,7 +5,10 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import Image from "next/image";
 export default function Home() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+  if (status === "loading") {
+    return <p>Loading...</p>;
+  }
   return (
     <main className="flex min-h-screen flex-col items-center justify-start bg-gray-100">
       {/* Hero Sekcija */}
