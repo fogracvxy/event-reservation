@@ -4,6 +4,8 @@ import "./globals.css";
 import Providers from "./components/Providers";
 const inter = Inter({ subsets: ["latin"] });
 import Navbar from "./_components/Navbar";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+
 export const metadata: Metadata = {
   title: "SummerKick Duga Resa event reservation",
   description: "Event reservation for SummerKick created by MSpudicDesign",
@@ -24,6 +26,7 @@ export default function RootLayout({
         <Providers>
           <Navbar />
           {children}
+          <SpeedInsights />
         </Providers>
       </body>
     </html>

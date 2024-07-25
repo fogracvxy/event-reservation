@@ -115,7 +115,7 @@ const Navbar = () => {
                 pathname === "/" ? "border-b-2" : ""
               }`}
             >
-              Home
+              Početna
             </Link>
 
             {session ? (
@@ -126,7 +126,7 @@ const Navbar = () => {
                     pathname === "/reservation" ? "border-b-2" : ""
                   }`}
                 >
-                  Reservation
+                  Rezervacija
                 </Link>
                 <button
                   onClick={handleSignOut}
@@ -167,7 +167,7 @@ const Navbar = () => {
                   pathname === "/" ? "border-b-2" : ""
                 }`}
               >
-                Home
+                Početna
               </Link>
 
               {session ? (
@@ -178,7 +178,7 @@ const Navbar = () => {
                       pathname === "/reservation" ? "border-b-2" : ""
                     }`}
                   >
-                    Reservation
+                    Rezervacija
                   </Link>
                   <button
                     onClick={handleSignOut}

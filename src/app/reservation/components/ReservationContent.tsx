@@ -137,7 +137,7 @@ export default function ReservationContent() {
             onClick={() => setShowModal(true)}
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           >
-            Create New Event
+            Kreiraj novi event
           </button>
         </div>
       )}
@@ -152,11 +152,11 @@ export default function ReservationContent() {
       {confirmModal.show && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center">
           <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h2 className="text-xl font-bold mb-4 text-black">Confirmation</h2>
+            <h2 className="text-xl font-bold mb-4 text-black">Potvrda</h2>
             <p className="mb-4 text-black">
               {confirmModal.type === "deleteEvent"
-                ? "Are you sure you want to delete this event?"
-                : "Are you sure you want to cancel this reservation?"}
+                ? "Jeste li sigurni da želite obrisati ovaj event?"
+                : "Jeste li sigurni da želite otkazati rezervaciju?"}
             </p>
             <div className="flex justify-end space-x-4">
               <button
@@ -165,7 +165,7 @@ export default function ReservationContent() {
                   setConfirmModal({ show: false, type: "", id: null })
                 }
               >
-                No
+                Ne
               </button>
               <button
                 className="px-4 py-2 bg-red-500 text-white rounded-md"
@@ -177,7 +177,7 @@ export default function ReservationContent() {
                   }
                 }}
               >
-                Yes
+                Da
               </button>
             </div>
           </div>
@@ -194,7 +194,7 @@ export default function ReservationContent() {
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
         >
-          <option value="all">All</option>
+          <option value="all">Sve</option>
           <option value="Napredni">Napredni</option>
           <option value="Rekreativci">Rekreativci</option>
         </select>
@@ -258,7 +258,7 @@ export default function ReservationContent() {
                             onClick={() => handleCancelReservation(res.id)}
                             className="ml-2 text-red-500 hover:text-red-700"
                           >
-                            Cancel
+                            Otkaži
                           </button>
                         </li>
                       ))}
@@ -272,7 +272,7 @@ export default function ReservationContent() {
                       onClick={() => handleDeleteEvent(event.id)}
                       className="w-full py-2 px-4 rounded-md text-white font-semibold bg-red-500 hover:bg-red-600"
                     >
-                      Delete Event
+                      Obriši event
                     </button>
                   </div>
                 ) : isUserReserved(event) ? (
@@ -288,7 +288,7 @@ export default function ReservationContent() {
                       }
                     }}
                   >
-                    Cancel Reservation
+                    Otkaži rezervaciju
                   </button>
                 ) : (
                   <button
@@ -301,8 +301,8 @@ export default function ReservationContent() {
                     onClick={() => handleReservation(event.id)}
                   >
                     {event.reservations.length < event.limit
-                      ? "Reserve"
-                      : "Full"}
+                      ? "Rezerviraj"
+                      : "Popunjeno"}
                   </button>
                 )}
               </div>
